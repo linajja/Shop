@@ -128,5 +128,33 @@
                 }
             }
         }
+
+        .bar {
+            .sort {
+                margin: 20px;
+                padding: 30px;
+                border: 1px solid gray;
+
+                select {
+                    outline: none;
+                }
+
+                span {
+                    margin-right: 6px;
+                    color: coral;
+                }
+                .range{
+                    display: flex;
+                        align-items: center;
+                        justify-content: flex-start;
+                        i{
+                            margin-right: 15px;;
+                        }
+                        b{
+                            padding: 5px;
+                        }
+                }
+            }
+        }
     }
 }

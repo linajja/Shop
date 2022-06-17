@@ -7,21 +7,32 @@ import Products from './Products';
 import TopBar from './TopBar';
 import axios from 'axios';
 import { getProductsFromServer } from '../../Actions/products';
+import Bar from './Bar';
+import { useRef } from 'react';
 
 function Front() {
+    const min = useRef();
+    const max = useRef();
     const [products, dp] = useReducer(productsReducer, null);
 
     useEffect(() => {
-        axios
-            .get('http://localhost:3003/products')
-            .then((res) => dp(getProductsFromServer(res.data)));
-    });
+        axios.get('http://localhost:3003/products').then((res) => {
+            const pr = [...res.data];
+            pr.sort((a, b) => a.price - b.price);
+            min.current = Math.floor(pr.shift().price);
+            max.current = Math.ceil(pr.pop().price);
+            dp(getProductsFromServer(res.data));
+        });
+    }, []);
 
     return (
-        <FrontContext.Provider value={{ products }}>
+        <FrontContext.Provider
+            value={{ products, dp, min: min.current, max: max.current }}
+        >
             <div id="shop">
                 <div className="bin">
                     <TopBar></TopBar>
+                    <Bar></Bar>
                     {products !== null ? (
                         <Products></Products>
                     ) : (
